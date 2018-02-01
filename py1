@@ -1,0 +1,19 @@
+print "hi.."
+print "Welcome to the SpyChat"
+spy_name = raw_input("Enter your name")
+if len(spy_name) >= 3:
+    print "welcome" + spy_name + ", i like to know about you."
+    spy_salutaion = raw_input("what should we call you(Mr. or Ms.)?")
+    if (spy_salutaion) > 0 :
+        spy_name = spy_salutaion + " " + spy_name
+        print "Alright" + spy_name + ", i like to know more about you.."
+        spy_age = input("Enter your age")
+        if spy_age>20 and spy_age<50 :
+            print "you are eligible to be spy"
+        else :
+            print "you are not eligible for spy"
+    else :
+        print "not valid"
+else :
+    print "invalid"
+
