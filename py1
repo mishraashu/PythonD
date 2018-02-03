@@ -24,7 +24,7 @@ elif (spy_exist.upper()== 'N'):
             spy_name = spy_salutaion + " " + spy_name
             print "Alright" + spy_name + ", i like to know more about you.."
             spy_ratings = input("please enter your ratings")
-            if (spy_ratings) <= 5.0 :
+            if (spy_ratings) >= 5.0 :
                 print 'Expert spy'
             elif (spy_ratings) <=  4.0 :
                 print('good spy')
@@ -37,6 +37,7 @@ elif (spy_exist.upper()== 'N'):
                 print "you are eligible to be spy"
             else :
                 print "you are not eligible for spy"
+            print "spy_name is %s and spy_age is %d and rating is %.2f" %(spy_name,spy_age,spy_ratings)
         else :
             print "not valid"
     else :
