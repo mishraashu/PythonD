@@ -23,6 +23,15 @@ elif (spy_exist.upper()== 'N'):
         if (spy_salutaion) > 0 :
             spy_name = spy_salutaion + " " + spy_name
             print "Alright" + spy_name + ", i like to know more about you.."
+            spy_ratings = input("please enter your ratings")
+            if (spy_ratings) <= 5.0 :
+                print 'Expert spy'
+            elif (spy_ratings) <=  4.0 :
+                print('good spy')
+            elif (spy_ratings) <= 3.0 :
+                print('bad spy')
+            else :
+                print('wroung entery')
             spy_age = input("Enter your age")
             if spy_age>20 and spy_age<50 :
                 print "you are eligible to be spy"
