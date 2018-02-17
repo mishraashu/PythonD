@@ -1,13 +1,30 @@
 from spy_detail import spy
+from spy_detail import Spy,ChatMessage
 from steganography.steganography import Steganography                          #import steganography which is used to send encrypted message to the friend
 from datetime import datetime
+import csv
+
 print "hi.."
 print "Welcome to the SpyChat"
 
 
+def load_friends():
+    with open('friend.csv', 'rU') as friends_data:
+        reader = list(csv.reader(friends_data,dialect='excel'))
+        for row in reader[1:]:
+            if row:
+                name = row[0]
+                age = (row[1])
+                rating = (row[2])
+                spy =Spy(name,age,rating)
+                friends.append(spy)
+
+
+
 STATUS_MESSGAES = ['available','sleeping','playing']
-friends = [{'name' :'aman','age' :35,'rating':6.9,'is_online':True,'chats':[]},{'name' :'saini','age' :35,'rating':6.9,'is_online':True,'chats':[]}]
-            #creating a friends list
+friends = []
+#creating a friends list
+load_friends()
 
 def add_status(current_status_message) :                                  #Function created add_status
 
@@ -52,6 +69,7 @@ def add_friend():                                                               
         'salutation': "",
         'age': 0,
         'ratings': 0.0,
+        'online':True,
         'chats':[]
         
     }
@@ -84,9 +102,12 @@ def add_friend():                                                               
             valid_rating = False
         else:
             print 'invalid ratings'
-        if len(new_friend['name'])>=3 and 55>=int(new_friend['age'])>=12 and new_friend['rating']>=spy['ratings']:     #We are givig a certain conditon to add a friend
+        new_friend['online']=True
+        if len(new_friend['name'])>=3 and 55>=int(new_friend['age'])>=12 and new_friend['rating']>=spy.rating:     #We are givig a certain conditon to add a friend
             friends.append(new_friend['name'])
-
+            with open('friend.csv','a') as friends_data:
+                writer = csv.writer(friends_data)
+                writer.writerow([new_friend['name'] ,new_friend['rating'],new_friend['age'],new_friend['online']])
         else:
             print "friend cannot be added "
     return len(friends)
@@ -94,10 +115,10 @@ def add_friend():                                                               
 def select_a_friend():                                                                                              #We are declaring a functon select_a_friend which is used to select a friend to send a message
     serial_no =1
     for frnd in friends:
-        print  str(serial_no) + " " + frnd['name']
+        print  str(serial_no) + " " + frnd.name
         serial_no = serial_no +1
     user_selected_frnd =input("select your frnd: ")
-    user_index = (user_selected_frnd -1)
+    user_index = user_selected_frnd -1
     return user_index                                                               #we are returning a user_index above declare function which is used to select a friend to send a message
 
 def send_message():                                                                     #declare a function send_message used to send a Encrypted message to friend using steagnography
@@ -107,11 +128,17 @@ def send_message():                                                             
     output_path = 'output.jpg'
     Steganography.encode(original_image,output_path,text)
     new_chat = {
+        "sender": spy.name,
+        "message_sent_to":user_frnd_index,
         "message": text,
         "time" :datetime.now(),
         "sent_by_me":True
     }
     friends[user_frnd_index]['chats'].append(new_chat)
+    with open('chats.csv', 'a') as chats_data:
+        writer = csv.writer(chats_data)
+        writer.writerow([new_chat['sender'],new_chat['message_sent_to'],new_chat['text'], new_chat['time'], new_chat['sent_by_me']])
+
     print "your secret message is ready! "
     print new_chat['time']
 
@@ -121,7 +148,19 @@ def read_message():                                                             
     secret_text = Steganography.decode(output_path)
     print "This is the secret message send by your friend" + " "+ secret_text
 
-def start_spyChat(spy_name , spy_age , spy_ratings):                                            #function define start_spyChat
+#def Chatload_friends():
+#    with open('chats.csv', 'rU') as chats_data:
+ #       reader = list(csv.reader(chats_data,dialect='excel'))
+  #         if row:
+   #             sender = row[0]
+    #            message_sent_to = (row[1])
+     #           text = (row[2])
+      #          time =(row[3])
+       #         sent_by_me = (row[4])
+        #        chats.append(new_chat)
+
+
+def start_spyChat(spy_name , spy_age , spy_rating):                                            #function define start_spyChat
     current_status_message = None
     show_menu = True
     while show_menu :                                                           #used while loop for taking input from the user several time whithout ending process
@@ -159,39 +198,33 @@ def start_spyChat(spy_name , spy_age , spy_ratings):                            
 spy_exist = raw_input("Are you existing spy? Y or N ")                      #we are asking user that he is existing user or not
 if (spy_exist.upper()== 'Y'):
     print 'we have already your details'
-    start_spyChat(spy['name'], spy['age'], spy['ratings'])                                     #function call start_spyChat
+    start_spyChat(spy.name, spy.age, spy.rating)                                     #function call start_spyChat
 
 
 elif (spy_exist.upper()== 'N'):
-    spy = {                                                                     #creating a dictonay named spy
-        'name': '',
-        'salutation': "",
-        'age': 0,
-        'ratings': 0.0,
-    }
 
-    spy['name'] = raw_input("Enter your name ")
-    if len(spy['name']) >= 3:
-        print "welcome" + spy['name'] + ", i like to know about you."
-        spy['salutation'] = raw_input("what should we call you(Mr. or Ms.)? ")
-        if (spy['salutation']) > 0 :
-            spy['name'] = spy['salutation'] + " " + spy['name']
-            print "Alright" + spy['name'] + ", i like to know more about you.."
-            spy['ratings'] = input("please enter your ratings ")
-            if (spy['ratings']) >= 5.0 :
+    spy.name= raw_input("Enter your name ")
+    if len(spy.name) >= 3:
+        print "welcome" + spy.name + ", i like to know about you."
+        spy.salutation = raw_input("what should we call you(Mr. or Ms.)? ")
+        if (spy.salutation) > 0 :
+            spy.name = spy.salutation + " " + spy.name
+            print "Alright" + spy.name + ", i like to know more about you.."
+            spy.ratings = input("please enter your ratings ")
+            if (spy.ratings) >= 5.0 :
                 print 'Expert spy'
-            elif (spy['ratings']) <=  4.0 :
+            elif (spy.ratings) <=  4.0 :
                 print('good spy')
-            elif (spy['ratings']) <= 3.0 :
+            elif (spy.ratings) <= 3.0 :
                 print('bad spy')
             else :
                 print('wroung entry')
-            spy['age'] = input("Enter your age ")
-            if spy['age']>20 and spy['age']<50 :
+            spy.age = input("Enter your age ")
+            if spy.age>20 and spy.age<50 :
                 print "you are eligible to be spy"
             else :
                 print "you are not eligible for spy"
-            print "spy name is %s and spy age is %d and rating is %.2f " %(spy['name'],spy['age'],spy['ratings'])
+            print "spy name is %s and spy age is %d and rating is %.2f " %(spy.name,spy.age,spy.ratings)
         else :
             print "not valid"
     else :
