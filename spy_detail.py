@@ -23,10 +23,11 @@ class Spy_friend:
 spy = Spy('Mr Ashish Mishra',23,7)
 
 friend_one = Spy_friend('mr ram',23,6,[])
-friend_two = Spy_friend('mr shyam',23,6,[])
-friend_three = Spy_friend('mr baam',23,6,[])
+friend_two = Spy_friend('mr shyam',23,6, [])
+friend_three = Spy_friend('mr baam',23,6, [])
 
 friends = [friend_one,friend_two,friend_three]
+chatslist =[]
 
 class ChatMessage:
 

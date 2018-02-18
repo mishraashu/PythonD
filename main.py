@@ -1,4 +1,4 @@
-from spy_detail import spy,friends
+from spy_detail import spy,friends,chatslist
 from spy_detail import Spy, ChatMessage,Spy_friend
 from steganography.steganography import Steganography    # import steganography which is used to send encrypted message to the friend
 from datetime import datetime
@@ -21,9 +21,25 @@ def load_friends():
                 friends.append(spy)
 #==========================================================================================================================================================================
 
+def Chatload_friends():
+    with open('Chats.csv', 'rU') as chats_data:
+        reader = list(csv.reader(chats_data, dialect='excel'))
+        for row in reader[1:]:
+            if row:
+                sender = row[0]
+                message_sent_to = (row[1])
+                text = (row[2])
+                time = row[3]
+                sent_by_me =row[4]
+                chat = [sender, message_sent_to, text, time, sent_by_me]
+                assert isinstance(chatslist.append, object)
+                chatslist.append(chat)
+
+#===========================================================================================================================================================================
 STATUS_MESSGAES = ['available', 'sleeping', 'playing']
 # creating a friends list
 load_friends()
+Chatload_friends()
 
 
 def add_status(current_status_message):  # Function created add_status
@@ -161,13 +177,8 @@ def read_message():                                                             
 
 def Read_Chat_History():
     friend_choice = select_a_friend()
-    count_sent_chats = 0
-    count_recive_chats =0
-    temp_sent =[]
-    temp_recive =[]
     for chat in friends[friend_choice].chats:
         if chat.sent_by_me :
-            temp_sent.append(chats.time)
             print(colored(str(chat.time.strftime("%d %B %Y %A %H : %M"))+",","blue"))
             print colored(spy.name,"red")
             print chat.message
@@ -175,20 +186,11 @@ def Read_Chat_History():
             print "you didn't make any chat with your frnd"
 
 
-#===========================================================================================================================================================================================
-# def Chatload_friends():
- #    chat_on = True
-  #     while chat_on:
-   #        if user_selected
-    #        if row:
-     #          message_sent_to = (row[1])
-      #          text = (row[2])
-       #         time =(row[3])
-        #        sent_by_me = (row[4])
-         #       chats.append(new_chat)
 
-#==============================================================================================================================================================================================
 
+
+
+#=============================================================================================================================================================================================
 def start_spyChat(spy_name, spy_age, spy_rating):  # function define start_spyChat
     current_status_message = None
     show_menu = True
@@ -266,4 +268,4 @@ elif (spy_exist.upper() == 'N'):
 else:
     print "invalid"
 
-#========================================================================================================================================================================================
+#=============================================================================================================================================
