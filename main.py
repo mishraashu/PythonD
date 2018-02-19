@@ -1,4 +1,4 @@
-from spy_detail import spy,friends,chatslist
+from spy_detail import spy,friends
 from spy_detail import Spy, ChatMessage,Spy_friend
 from steganography.steganography import Steganography    # import steganography which is used to send encrypted message to the friend
 from datetime import datetime
@@ -10,6 +10,7 @@ print "Welcome to the SpyChat"
 
 
 def load_friends():
+
     with open('friend.csv', 'rU') as friends_data:
         reader = list(csv.reader(friends_data, dialect='excel'))
         for row in reader[1:]:
@@ -27,14 +28,11 @@ def Chatload_friends():
         for row in reader[1:]:
             if row:
                 sender = row[0]
-                message_sent_to = (row[1])
-                text = (row[2])
-                time = row[3]
-                sent_by_me =row[4]
-                chat = [sender, message_sent_to, text, time, sent_by_me]
-                assert isinstance(chatslist.append, object)
-                chatslist.append(chat)
-
+                message_sent_to= row[1]
+                text = row[3]
+                time = row[4]
+                sent_by_me= row[4]
+                chatlist = [sender,message_sent_to,text,time,sent_by_me]
 #===========================================================================================================================================================================
 STATUS_MESSGAES = ['available', 'sleeping', 'playing']
 # creating a friends list
@@ -174,16 +172,18 @@ def read_message():                                                             
         print colored("I am fine,we will meet Tommorow","blue")
 
 #===========================================================================================================================================================================================
+def ReadChatload_friends(choice):
+    name_friend = friends[choice].name
+    with open('Chats.csv', 'rU') as chats_data:
+        reader = list(csv.reader(chats_data, dialect='excel'))
+        check = False
+        for row in reader[1:]:
+            if row:
+                    if (row[1]==name_friend):
+                        check =True
+                        print  colored(row[2],"red")
+                        print  colored(row[3],"blue")
 
-def Read_Chat_History():
-    friend_choice = select_a_friend()
-    for chat in friends[friend_choice].chats:
-        if chat.sent_by_me :
-            print(colored(str(chat.time.strftime("%d %B %Y %A %H : %M"))+",","blue"))
-            print colored(spy.name,"red")
-            print chat.message
-        else :
-            print "you didn't make any chat with your frnd"
 
 
 
@@ -220,7 +220,9 @@ def start_spyChat(spy_name, spy_age, spy_rating):  # function define start_spyCh
         elif (spy_menu_choice == 4):
             read_message()  # function call read_message
         elif (spy_menu_choice == 5):
-           Read_Chat_History()
+            print "select a friend whom you want to see the chat"
+            choice = select_a_friend()
+            ReadChatload_friends(choice)
         elif (spy_menu_choice == 0):
             print 'you are log out'
             show_menu = False
